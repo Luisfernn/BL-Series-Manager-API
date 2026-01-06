@@ -6,6 +6,7 @@ from app.api.routes.tags import router as tags_router
 app = FastAPI()
 
 app.include_router(series_router)
+app.include_router(tags_router)
 
 
 @app.get("/health")
