@@ -10,3 +10,5 @@ class Actor(Base):
     birthday = Column(String, nullable=True)
     agency = Column(String, nullable=True)
     ig = Column(String, nullable=True)
+
+    series = relationship("Series", secondary="series_actors", back_populates="actors")
