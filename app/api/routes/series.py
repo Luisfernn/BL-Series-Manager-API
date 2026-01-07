@@ -30,23 +30,19 @@ def create_series_endpoint(
         )
 
 
-@router.post(
-    "/{title}/tags",
-    status_code=status.HTTP_200_OK,
-)
+@router.post("/{title}/tags", status_code=status.HTTP_200_OK)
 def add_tags_to_series_endpoint(
     title: str,
-    tag_names: list[str],
+    payload: SeriesTagsAdd,
     db: Session = Depends(get_db),
 ):
     try:
         add_tags_to_series(
             db,
             series_title=title,
-            tag_names=tag_names,
+            tag_names=payload.tags,
         )
         return {"message": "Tags adicionadas com sucesso."}
-
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
