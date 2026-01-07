@@ -13,3 +13,4 @@ class Series(Base):
     date_watched = Column(String, nullable=True)
 
      tags = relationship("Tag", secondary="series_tag", back_populates="series")
+     actors = relationship("Actor", secondary="series_actors", back_populates="series")
