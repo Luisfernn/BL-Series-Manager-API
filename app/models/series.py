@@ -11,3 +11,5 @@ class Series(Base):
     production_company = Column(String, nullable=True)
     date_start = Column(String, nullable=True)      
     date_watched = Column(String, nullable=True)
+
+     tags = relationship("Tag", secondary="series_tag", back_populates="series")
