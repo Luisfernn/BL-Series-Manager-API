@@ -5,6 +5,7 @@ from app.database import get_db
 from app.schemas.series import SeriesCreate, SeriesResponse
 from app.services.series_service import create_series
 from app.services.series_tag_service import add_tags_to_series
+from app.schemas.series_tags import SeriesTagsAdd
 
 router = APIRouter(prefix="/series", tags=["Series"])
 
