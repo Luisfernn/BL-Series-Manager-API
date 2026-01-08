@@ -102,3 +102,15 @@ def add_characters_to_series_endpoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(exc),
         )               
+
+
+@router.get(
+    "",
+    response_model=List[SeriesResponse],
+    status_code=status.HTTP_200_OK,
+)
+def list_series_endpoint(
+    search: str | None = Query(default=None),
+    db: Session = Depends(get_db),
+):
+    return list_series(db, search=search)
