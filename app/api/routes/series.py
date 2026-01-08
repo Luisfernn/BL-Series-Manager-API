@@ -8,6 +8,8 @@ from app.services.series_tag_service import add_tags_to_series
 from app.schemas.series_tags import SeriesTagsAdd
 from app.schemas.series_actors import SeriesActorsAdd
 from app.services.series_actor_service import add_actors_to_series
+from app.schemas.series_characters import SeriesCharactersAdd
+from app.services.series_character_service import add_characters_to_series
 
 router = APIRouter(prefix="/series", tags=["Series"])
 
