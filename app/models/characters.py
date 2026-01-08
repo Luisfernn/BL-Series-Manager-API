@@ -8,5 +8,5 @@ class Character(Base):
     name = Column(String, nullable=False)
 
     # Associações opcionais (decisão consciente)
-    series_id = Column(Integer, ForeignKey("series.id"), nullable=True)
-    actor_id = Column(Integer, ForeignKey("actors.id"), nullable=True)
+    series_id = Column(Integer, ForeignKey("series.id"), nullable=False)
+    actor_id = Column(Integer, ForeignKey("actors.id"), nullable=False)
