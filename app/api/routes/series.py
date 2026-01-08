@@ -50,3 +50,27 @@ def add_tags_to_series_endpoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(exc),
         )
+
+
+@router.post(
+    "/{series_id}/actors",
+    status_code=status.HTTP_200_OK,
+)
+def add_actors_to_series_endpoint(
+    series_id: int,
+    payload: SeriesActorsAdd,
+    db: Session = Depends(get_db),
+):
+    try:
+        add_actors_to_series(
+            db,
+            series_id=series_id,
+            actor_ids=payload.actor_ids,
+        )
+        return {"message": "Atores adicionados com sucesso."}
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )        
