@@ -27,3 +27,17 @@ def add_actors_to_series(db: Session, series_id: int, actor_names: list[str]) ->
             db.add(association)
 
     db.commit()
+
+
+def list_series(
+    db: Session,
+    search: str | None = None,
+) -> list[Series]:
+    query = db.query(Series)
+
+    if search:
+        query = query.filter(
+            func.lower(Series.title).like(f"%{search.lower()}%")
+        )
+
+    return query.order_by(Series.title).all()
