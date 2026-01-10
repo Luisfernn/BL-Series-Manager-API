@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from fastapi import Query
+from typing import List
 from app.schemas.series import SeriesCreate, SeriesResponse
 from app.services.series_service import create_series
 from app.services.series_tag_service import add_tags_to_series
@@ -10,8 +12,7 @@ from app.schemas.series_actors import SeriesActorsAdd
 from app.services.series_actor_service import add_actors_to_series
 from app.schemas.series_characters import SeriesCharactersAdd
 from app.services.series_character_service import add_characters_to_series
-from fastapi import Query
-from typing import List
+
 
 router = APIRouter(prefix="/series", tags=["Series"])
 
