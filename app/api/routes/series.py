@@ -117,3 +117,27 @@ def list_series_endpoint(
     db: Session = Depends(get_db),
 ):
     return list_series(db, search=search)
+
+
+@router.post(
+    "/{series_id}/ship-actors",
+    status_code=status.HTTP_200_OK,
+)
+def add_ship_actors_to_series_endpoint(
+    series_id: int,
+    payload: ShipActorsSeriesCreate,
+    db: Session = Depends(get_db),
+):
+    try:
+        add_ship_to_series(
+            db,
+            series_id=series_id,
+            ship_id=payload.ship_id,
+        )
+        return {"message": "Ship de atores associado à série com sucesso."}
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
