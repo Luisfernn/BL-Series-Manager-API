@@ -12,6 +12,8 @@ from app.schemas.series_actors import SeriesActorsAdd
 from app.services.series_actor_service import add_actors_to_series
 from app.schemas.series_characters import SeriesCharactersAdd
 from app.services.series_character_service import add_characters_to_series
+from app.schemas.ship_actors_series import ShipActorsSeriesCreate
+from app.services.ship_actors_series_service import add_ship_to_series
 
 
 router = APIRouter(prefix="/series", tags=["Series"])
