@@ -1,0 +1,237 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    min-height: 100vh;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #2a2a2a 0%, #261f2e 50%, #1f1f1f 100%);
+    padding: 25px 30px;
+    border-bottom: 2px solid #3a3a3a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.back-button {
+    background: none;
+    border: 2px solid #4a90e2;
+    color: #4a90e2;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    background: #4a90e2;
+    color: #fff;
+    transform: translateX(-3px);
+}
+
+.arrow {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.page-title {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+    text-align: center;
+}
+
+.spacer {
+    width: 45px;
+}
+
+.content-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.search-section {
+    margin-bottom: 30px;
+}
+
+.search-input {
+    width: 100%;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+    border: 2px solid #3a3a3a;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    color: #e0e0e0;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.bl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bl-card {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+    border: 2px solid #3a3a3a;
+    border-radius: 12px;
+    padding: 20px 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bl-card:hover {
+    transform: translateX(8px);
+    border-color: #4a90e2;
+    box-shadow: 0 5px 20px rgba(74, 144, 226, 0.3);
+    background: linear-gradient(135deg, #2f2f2f 0%, #242424 100%);
+}
+
+.bl-info {
+    flex: 1;
+}
+
+.bl-title {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.bl-meta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.bl-meta-item {
+    font-size: 0.95em;
+    color: #999;
+}
+
+.bl-meta-item span {
+    color: #b0b0b0;
+    font-weight: 500;
+}
+
+.bl-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-completed {
+    background: rgba(74, 144, 226, 0.2);
+    color: #4a90e2;
+    border: 1px solid #4a90e2;
+}
+
+.status-dropped {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+}
+
+.bl-arrow {
+    font-size: 1.5em;
+    color: #4a90e2;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.bl-card:hover .bl-arrow {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.empty-icon {
+    font-size: 5em;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.empty-message {
+    font-size: 1.3em;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 20px 15px;
+    }
+
+    .page-title {
+        font-size: 1.3em;
+    }
+
+    .content-container {
+        padding: 30px 15px;
+    }
+
+    .bl-card {
+        padding: 18px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bl-card:hover {
+        transform: translateY(-5px) translateX(0);
+    }
+
+    .bl-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .bl-status {
+        margin-top: 10px;
+    }
+
+    .bl-arrow {
+        display: none;
+    }
+}
