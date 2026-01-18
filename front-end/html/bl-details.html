@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do BL</title>
+    <link rel="stylesheet" href="css/bl-details.css">
+</head>
+<body>
+
+    <header class="page-header">
+        <button class="back-button" onclick="window.location.href='bl-list.html'">
+            <span class="arrow">←</span>
+        </button>
+        <h1 class="page-title" id="bl_title">Detalhes do BL</h1>
+        <div class="spacer"></div>
+    </header>
+
+    <div class="content-container">
+
+        <!-- Seção 1: Informações do BL -->
+        <section class="info-section">
+            <div class="info-grid">
+
+                <div class="info-item">
+                    <span class="info-label">País</span>
+                    <span class="info-value" id="country">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Data de lançamento</span>
+                    <span class="info-value" id="release_date">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Gênero</span>
+                    <span class="info-value" id="genre">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Plataforma</span>
+                    <span class="info-value" id="platform">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="info-value" id="status">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Nota</span>
+                    <span class="info-value" id="rating">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Produtora</span>
+                    <span class="info-value" id="producer">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Data de início</span>
+                    <span class="info-value" id="start_date">-</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Data assistida</span>
+                    <span class="info-value" id="end_date">-</span>
+                </div>
+
+            </div>
+
+            <div class="synopsis-container">
+                <h3 class="synopsis-title">Sinopse</h3>
+                <p class="synopsis-text" id="synopsis">-</p>
+            </div>
+        </section>
+
+        <!-- Seção 2: Personagens -->
+        <section class="detail-section">
+            <div class="section-header">
+                <h2 class="section-title">Personagens</h2>
+                <button class="add-button" onclick="linkCharacter()">
+                    <span class="add-icon">➕</span>
+                    Vincular personagem
+                </button>
+            </div>
+
+            <div id="characters_list" class="items-list"></div>
+            <div id="characters_empty" class="empty-message">
+                Nenhum personagem vinculado ainda.
+            </div>
+        </section>
+
+        <!-- Seção 3: Atores -->
+        <section class="detail-section">
+            <div class="section-header">
+                <h2 class="section-title">Atores</h2>
+                <button class="add-button" onclick="linkActor()">
+                    <span class="add-icon">➕</span>
+                    Vincular ator
+                </button>
+            </div>
+
+            <div id="actors_list" class="items-list"></div>
+            <div id="actors_empty" class="empty-message">
+                Nenhum ator vinculado ainda.
+            </div>
+        </section>
+
+        <!-- Seção 4: Ships de Personagens -->
+        <section class="detail-section">
+            <div class="section-header">
+                <h2 class="section-title">Ships de Personagens</h2>
+                <button class="add-button" onclick="linkCharacterShip()">
+                    <span class="add-icon">➕</span>
+                    Vincular ship de personagens
+                </button>
+            </div>
+
+            <div id="character_ships_list" class="items-list"></div>
+            <div id="character_ships_empty" class="empty-message">
+                Nenhum ship de personagens vinculado ainda.
+            </div>
+        </section>
+
+        <!-- Seção 5: Ships de Atores -->
+        <section class="detail-section">
+            <div class="section-header">
+                <h2 class="section-title">Ships de Atores</h2>
+                <button class="add-button" onclick="linkActorShip()">
+                    <span class="add-icon">➕</span>
+                    Vincular ship de atores
+                </button>
+            </div>
+
+            <div id="actor_ships_list" class="items-list"></div>
+            <div id="actor_ships_empty" class="empty-message">
+                Nenhum ship de atores vinculado ainda.
+            </div>
+        </section>
+
+    </div>
+
+    <script src="js/bl-details.js"></script>
+</body>
+</html>
