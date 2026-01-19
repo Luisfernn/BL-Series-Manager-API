@@ -1,8 +1,11 @@
-// Dados de exemplo do BL
-const blData = {
-    id: 1,
-    name: "Love in the Moonlight"
-};
+// Obter BL pela URL
+const urlParams = new URLSearchParams(window.location.search);
+const blId = urlParams.get('blId');
+
+if (!blId) {
+    alert('BL não informado');
+    window.history.back();
+}
 
 let messageTimeout = null;
 
@@ -10,8 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const blNameEl = document.getElementById('current-bl');
     const form = document.getElementById('add-actor-form');
 
+    // Nome do BL será preenchido futuramente pelo backend
     if (blNameEl) {
-        blNameEl.textContent = blData.name;
+        blNameEl.textContent = `BL #${blId}`;
     }
 
     if (form) {
@@ -32,7 +36,14 @@ function handleSubmit(event) {
         return;
     }
 
-    // Simulação de sucesso (remover quando implementar o backend real)
+    const requestData = {
+        blId: blId,
+        actorName: actorName
+    };
+
+    // Aqui entrará o fetch futuramente
+    console.log('Dados enviados:', requestData);
+
     showMessage(
         'success',
         `Ator "${actorName}" foi vinculado com sucesso ao BL.`
@@ -47,7 +58,6 @@ function showMessage(type, text) {
 
     if (!successMessage || !errorMessage) return;
 
-    // Limpar timeout anterior
     if (messageTimeout) {
         clearTimeout(messageTimeout);
         messageTimeout = null;
