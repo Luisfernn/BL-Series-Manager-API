@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Tags</title>
+    <link rel="stylesheet" href="css/add-tags.css">
+</head>
+<body>
+    <header class="page-header">
+        <button class="back-button" onclick="window.history.back()">
+            <span class="arrow">←</span>
+        </button>
+        <div class="header-content">
+            <h1 class="page-title">Adicionar Tags</h1>
+            <p class="page-subtitle">Selecione tags existentes ou crie novas</p>
+        </div>
+        <div class="spacer"></div>
+    </header>
+
+    <div class="content-container">
+        <!-- BL Atual -->
+        <div class="bl-info-banner">
+            <span class="banner-label">BL:</span>
+            <span class="banner-value" id="current-bl">Love in the Moonlight</span>
+        </div>
+
+        <!-- Mensagens de Feedback -->
+        <div id="success-message" class="message success-message" style="display: none;">
+            <span class="message-icon">✓</span>
+            <span class="message-text"></span>
+        </div>
+
+        <div id="error-message" class="message error-message" style="display: none;">
+            <span class="message-icon">✕</span>
+            <span class="message-text"></span>
+        </div>
+
+        <!-- Formulário -->
+        <form id="add-tags-form" class="tags-form">
+            <!-- Seção 1: Tags Existentes -->
+            <div class="section existing-tags-section">
+                <h3 class="section-title">Tags Existentes</h3>
+                <div id="existing-tags-list" class="tags-list">
+                    <!-- Tags serão inseridas aqui dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Seção 2: Criar Novas Tags -->
+            <div class="section new-tags-section">
+                <h3 class="section-title">Criar Novas Tags</h3>
+                <div id="new-tags-container">
+                    <div class="new-tag-field">
+                        <input 
+                            type="text" 
+                            id="new-tag-1" 
+                            class="form-input"
+                            placeholder="Nome da nova tag"
+                        >
+                    </div>
+                </div>
+
+                <button type="button" class="add-tag-button" onclick="addNewTagField()">
+                    <span class="add-icon">+</span>
+                    Adicionar mais uma tag
+                </button>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-button" onclick="window.history.back()">
+                    Cancelar
+                </button>
+                <button type="submit" class="submit-button">
+                    Vincular tags à série
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/add-tags.js"></script>
+</body>
+</html>
