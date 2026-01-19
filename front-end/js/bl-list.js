@@ -97,5 +97,5 @@ function createBlCard(bl) {
 }
 
 function goToBlDetails(blId) {
-    window.location.href = `bl-details.html?id=${blId}`;
+    window.location.href = `bl-details.html?blId=${blId}`;
 }
