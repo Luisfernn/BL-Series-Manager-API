@@ -38,3 +38,9 @@ function requireAuth() {
         window.location.href = 'login.html';
     }
 }
+
+/*Função de logout*/
+function logout() {
+    localStorage.removeItem('isAuthenticated');
+    window.location.href = 'login.html';
+}
