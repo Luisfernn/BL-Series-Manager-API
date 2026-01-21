@@ -1,46 +1,37 @@
 /**
  * auth.js
- * Utilitário central de autenticação do front-end
- * Responsável por gerenciar token e acesso às páginas
+ * Controle simples de autenticação (frontend)
  */
 
-const TOKEN_KEY = 'bl_auth_token';
+const AUTH_KEY = 'bl_logged_user';
 
 /**
- * Salva o token no navegador
- * @param {string} token
+ * Marca o usuário como logado
+ * @param {string} login
  */
-function saveToken(token) {
-    if (!token) return;
-    localStorage.setItem(TOKEN_KEY, token);
+function loginUser(login) {
+    localStorage.setItem(AUTH_KEY, login);
 }
 
 /**
- * Retorna o token salvo
- * @returns {string|null}
+ * Remove o login do usuário
  */
-function getToken() {
-    return localStorage.getItem(TOKEN_KEY);
+function logoutUser() {
+    localStorage.removeItem(AUTH_KEY);
+    window.location.href = 'login.html';
 }
 
 /**
- * Remove o token (logout)
- */
-function removeToken() {
-    localStorage.removeItem(TOKEN_KEY);
-}
-
-/**
- * Verifica se o usuário está autenticado
+ * Verifica se o usuário está logado
  * @returns {boolean}
  */
 function isAuthenticated() {
-    return !!getToken();
+    return !!localStorage.getItem(AUTH_KEY);
 }
 
 /**
  * Protege páginas privadas
- * Se não estiver autenticado, redireciona para login
+ * Se não estiver logado → redireciona para login
  */
 function requireAuth() {
     if (!isAuthenticated()) {
