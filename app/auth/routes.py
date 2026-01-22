@@ -1,41 +1,28 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from app.core.security import verify_password
 
-router = APIRouter(
-    prefix="/auth",
-    tags=["Authentication"]
-)
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
-# =========================
-# MODELO DE DADOS
-# =========================
+
+# Modelo de dados do login
 class LoginRequest(BaseModel):
     login: str
     password: str
 
 
-class LoginResponse(BaseModel):
-    message: str
-
-
-# =========================
-# CREDENCIAIS TEMPORÁRIAS
-# (APENAS PARA USO LOCAL)
-# =========================
-VALID_LOGIN = "admin"
-VALID_PASSWORD = "admin123"
-
-
-# =========================
-# ENDPOINT DE LOGIN
-# =========================
-@router.post("/login", response_model=LoginResponse)
+@router.post("/login")
 def login(data: LoginRequest):
-    if data.login != VALID_LOGIN or data.password != VALID_PASSWORD:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Login ou senha inválidos"
-        )
+    # Credenciais fixas (apenas você)
+    VALID_LOGIN = "admin"
+    HASHED_PASSWORD = "$2b$12$KIX9rPpE1eZ7m9rQ2Z7D1O8xZxk7JjXQqM0k2QXjUQ1M3JqE4pKXK"
+    # ↑ hash de exemplo (senha real você decide)
+
+    if data.login != VALID_LOGIN:
+        raise HTTPException(status_code=401, detail="Login inválido")
+
+    if not verify_password(data.password, HASHED_PASSWORD):
+        raise HTTPException(status_code=401, detail="Senha inválida")
 
     return {
         "message": "Login realizado com sucesso"
