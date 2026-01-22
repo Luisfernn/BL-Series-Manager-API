@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.api.routes.series import router as series_router
 from app.api.routes.tags import router as tags_router
+from app.routes import auth
 
 
 app = FastAPI()
