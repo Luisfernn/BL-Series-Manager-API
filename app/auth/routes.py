@@ -14,7 +14,7 @@ class LoginRequest(BaseModel):
 @router.post("/login")
 def login(data: LoginRequest):
     # Credenciais fixas (apenas você)
-    VALID_LOGIN = "admin"
+    VALID_LOGIN = "Thee"
     HASHED_PASSWORD = "$2b$12$KIX9rPpE1eZ7m9rQ2Z7D1O8xZxk7JjXQqM0k2QXjUQ1M3JqE4pKXK"
     # ↑ hash de exemplo (senha real você decide)
 
