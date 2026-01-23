@@ -7,4 +7,4 @@ class Tag(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False, unique=True)
 
-     series = relationship("Series", secondary="series_tag", back_populates="tags")
+    series = relationship("Series", secondary="series_tag", back_populates="tags")
