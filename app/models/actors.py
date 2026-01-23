@@ -13,3 +13,9 @@ class Actor(Base):
     ig = Column(String, nullable=True)
 
     series = relationship("Series", secondary="series_actors", back_populates="actors")
+
+    characters = relationship(
+        "SeriesCharacter",
+        back_populates="series",
+        cascade="all, delete-orphan"
+    )
