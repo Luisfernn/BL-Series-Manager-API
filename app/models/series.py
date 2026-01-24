@@ -21,3 +21,9 @@ class Series(Base):
         back_populates="series",
         cascade="all, delete-orphan"
     )
+
+    ships = relationship(
+    "ShipCharacterSeries",
+    back_populates="series",
+    cascade="all, delete"
+)
