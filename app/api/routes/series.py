@@ -13,7 +13,7 @@ from app.services.series_actor_service import add_actors_to_series
 from app.schemas.series_characters import SeriesCharactersAdd
 from app.services.series_character_service import add_characters_to_series
 from app.schemas.ship_actors_series import ShipActorsSeriesCreate
-from app.services.ship_actors_series_service import add_ship_to_series
+from app.services.ship_actors_series_service import add_ship_actor_to_series
 from app.schemas.ship_characters import ShipCharacterAdd
 from app.services.ship_characters_service import add_ship_character_to_series
 
