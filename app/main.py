@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.include_router(auth_router)
 app.include_router(series_router)
 app.include_router(tags_router)
 app.include_router(auth.router)
