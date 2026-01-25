@@ -31,7 +31,7 @@ def create_series_endpoint(
     db: Session = Depends(get_db),
 ):
     try:
-        series = create_series(db, **series_in.dict())
+        series = create_series(db, series_in)
         return series
 
     except ValueError as exc:
