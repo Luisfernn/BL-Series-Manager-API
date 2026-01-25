@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from fastapi import Query
 from typing import List
-from app.schemas.series import SeriesCreate, SeriesResponse
-from app.services.series_service import create_series, list_series
+from app.schemas.series import SeriesCreate, SeriesResponse, SeriesUpdate
+from app.services.series_service import create_series, list_series, update_series, delete_series, get_series_by_id
 from app.services.series_tag_service import add_tags_to_series
 from app.schemas.series_tags import SeriesTagsAdd
 from app.schemas.series_actors import SeriesActorsAdd
@@ -119,6 +119,62 @@ def list_series_endpoint(
     db: Session = Depends(get_db),
 ):
     return list_series(db, search=search)
+
+
+@router.get(
+    "/{series_id}",
+    response_model=SeriesResponse,
+    status_code=status.HTTP_200_OK,
+)
+def get_series_endpoint(
+    series_id: int,
+    db: Session = Depends(get_db),
+):
+    series = get_series_by_id(db, series_id)
+    if not series:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Series not found"
+        )
+    return series
+
+
+@router.put(
+    "/{series_id}",
+    response_model=SeriesResponse,
+    status_code=status.HTTP_200_OK,
+)
+def update_series_endpoint(
+    series_id: int,
+    series_in: SeriesUpdate,
+    db: Session = Depends(get_db),
+):
+    try:
+        series = update_series(db, series_id, series_in)
+        return series
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
+
+
+@router.delete(
+    "/{series_id}",
+    status_code=status.HTTP_200_OK,
+)
+def delete_series_endpoint(
+    series_id: int,
+    db: Session = Depends(get_db),
+):
+    try:
+        delete_series(db, series_id)
+        return {"message": "Series deleted successfully"}
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
 
 
 @router.post(
