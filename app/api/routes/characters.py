@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.schemas.characters import CharacterCreate, CharacterResponse, CharacterUpdate
-from app.services.character_service import create_character, get_character_by_id, update_character, delete_character
+from app.schemas.characters import CharacterCreate, CharacterResponse
+from app.services.character_service import create_character, get_character_by_id
 
 router = APIRouter(prefix="/characters", tags=["Characters"])
 
@@ -48,41 +48,3 @@ def get_character_endpoint(
             detail="Character not found"
         )
     return character
-
-
-@router.put(
-    "/{character_id}",
-    response_model=CharacterResponse,
-    status_code=status.HTTP_200_OK,
-)
-def update_character_endpoint(
-    character_id: int,
-    payload: CharacterUpdate,
-    db: Session = Depends(get_db),
-):
-    try:
-        character = update_character(db, character_id, payload)
-        return character
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(exc),
-        )
-
-
-@router.delete(
-    "/{character_id}",
-    status_code=status.HTTP_200_OK,
-)
-def delete_character_endpoint(
-    character_id: int,
-    db: Session = Depends(get_db),
-):
-    try:
-        delete_character(db, character_id)
-        return {"message": "Character deleted successfully"}
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(exc),
-        )

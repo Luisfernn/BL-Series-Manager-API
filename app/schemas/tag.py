@@ -10,11 +10,6 @@ class TagCreate(TagBase):
     pass
 
 
-class TagUpdate(BaseModel):
-    """Schema para atualização de tag"""
-    name: Optional[str] = Field(None, example="Romance")
-
-
 class TagResponse(TagBase):
     id: int
 

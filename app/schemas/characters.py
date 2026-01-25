@@ -12,14 +12,6 @@ class CharacterCreate(CharacterBase):
     actor_id: Optional[int] = Field(None, example=1)
 
 
-class CharacterUpdate(BaseModel):
-    """Schema para atualização de personagem - todos os campos são opcionais"""
-    name: Optional[str] = Field(None, example="Kim Min-gyu")
-    series_id: Optional[int] = Field(None, example=1)
-    actor_id: Optional[int] = Field(None, example=1)
-    role_type: Optional[str] = Field(None, example="Main")
-
-
 class CharacterResponse(CharacterBase):
     id: int
     series_id: int

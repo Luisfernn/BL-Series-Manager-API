@@ -4,7 +4,6 @@ from datetime import date
 from typing import Optional
 
 from app.models.actors import Actor
-from app.schemas.actors import ActorUpdate
 
 
 def get_actor_by_name(db: Session, name: str) -> Actor | None:
@@ -55,35 +54,3 @@ def create_actor(
     db.refresh(actor)
 
     return actor
-
-
-def update_actor(db: Session, actor_id: int, actor_update: ActorUpdate) -> Actor:
-    """Atualiza um ator existente"""
-    actor = get_actor_by_id(db, actor_id)
-
-    if not actor:
-        raise ValueError("Actor not found.")
-
-    # Atualiza apenas os campos que foram fornecidos
-    update_data = actor_update.model_dump(exclude_unset=True)
-
-    for field, value in update_data.items():
-        setattr(actor, field, value)
-
-    db.commit()
-    db.refresh(actor)
-
-    return actor
-
-
-def delete_actor(db: Session, actor_id: int) -> bool:
-    """Deleta um ator"""
-    actor = get_actor_by_id(db, actor_id)
-
-    if not actor:
-        raise ValueError("Actor not found.")
-
-    db.delete(actor)
-    db.commit()
-
-    return True

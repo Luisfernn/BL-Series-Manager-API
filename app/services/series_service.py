@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.series import Series
-from app.schemas.series import SeriesCreate, SeriesUpdate
+from app.schemas.series import SeriesCreate
 from app.models.series_actors import SeriesActor
 from sqlalchemy import func
 from app.services.actor_service import get_actor_by_name
@@ -33,39 +33,6 @@ def get_series_by_title(db: Session, title: str):
 
 def get_series_by_id(db: Session, series_id: int):
     return db.query(Series).filter(Series.id == series_id).first()
-
-
-def update_series(db: Session, series_id: int, series_update: SeriesUpdate) -> Series:
-    """Atualiza uma série existente"""
-    series = get_series_by_id(db, series_id)
-
-    if not series:
-        raise ValueError("Series not found.")
-
-    # Atualiza apenas os campos que foram fornecidos
-    update_data = series_update.model_dump(exclude_unset=True)
-
-    for field, value in update_data.items():
-        setattr(series, field, value)
-
-    db.commit()
-    db.refresh(series)
-
-    return series
-
-
-def delete_series(db: Session, series_id: int) -> bool:
-    """Deleta uma série"""
-    series = get_series_by_id(db, series_id)
-
-    if not series:
-        raise ValueError("Series not found.")
-
-    db.delete(series)
-    db.commit()
-
-    return True    
-
 
 
 def add_actors_to_series(db: Session, series_id: int, actor_names: list[str]) -> None:

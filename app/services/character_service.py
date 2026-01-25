@@ -3,7 +3,6 @@ from typing import Optional
 
 from app.models.characters import Character
 from app.models.series import Series
-from app.schemas.characters import CharacterUpdate
 
 
 def get_character_by_id(db: Session, character_id: int) -> Character | None:
@@ -34,35 +33,3 @@ def create_character(
     db.refresh(character)
 
     return character
-
-
-def update_character(db: Session, character_id: int, character_update: CharacterUpdate) -> Character:
-    """Atualiza um personagem existente"""
-    character = get_character_by_id(db, character_id)
-
-    if not character:
-        raise ValueError("Character not found.")
-
-    # Atualiza apenas os campos que foram fornecidos
-    update_data = character_update.model_dump(exclude_unset=True)
-
-    for field, value in update_data.items():
-        setattr(character, field, value)
-
-    db.commit()
-    db.refresh(character)
-
-    return character
-
-
-def delete_character(db: Session, character_id: int) -> bool:
-    """Deleta um personagem"""
-    character = get_character_by_id(db, character_id)
-
-    if not character:
-        raise ValueError("Character not found.")
-
-    db.delete(character)
-    db.commit()
-
-    return True
