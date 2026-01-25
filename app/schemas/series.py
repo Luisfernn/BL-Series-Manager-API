@@ -1,27 +1,24 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 from typing import Optional
-import re
-
-
-YEAR_MONTH_REGEX = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
+from datetime import date
+from decimal import Decimal
 
 
 class SeriesBase(BaseModel):
     title: str = Field(..., example="Love in the Moonlight")
+    country: str = Field(..., example="Thailand")
+    release_date: date = Field(..., example="2023-08-15")
+    episode_number: int = Field(..., example="12")
+    genre: str = Field(..., example="Romance, Drama")
+    synopsis: str = Field(..., example="A story about...")
+    platform: str = Field(..., example="Netflix")
+    rate: Decimal = Field(..., example=8.5)
+
+    # Campos opcionais
     status: Optional[str] = Field(None, example="completed")
     production_company: Optional[str] = Field(None, example="GMMTV")
-    date_start: Optional[str] = Field(None, example="2023-08")
-    date_watched: Optional[str] = Field(None, example="2023-09")
-
-    @validator("date_start", "date_watched")
-    def validate_year_month(cls, value):
-        if value is None:
-            return value
-
-        if not YEAR_MONTH_REGEX.match(value):
-            raise ValueError("Date must be in YYYY-MM format")
-
-        return value
+    date_start: Optional[date] = Field(None, example="2023-08-15")
+    date_watched: Optional[date] = Field(None, example="2023-09-20")
 
 
 class SeriesCreate(SeriesBase):

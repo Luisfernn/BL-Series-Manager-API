@@ -6,7 +6,6 @@ class Character(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-
-    # Associações opcionais (decisão consciente)
-    series_id = Column(Integer, ForeignKey("series.id"), nullable=False)
-    actor_id = Column(Integer, ForeignKey("actors.id"), nullable=False)
+    series_id = Column(ForeignKey("series.id"), Integer)
+    actor_id = Column(ForeignKey("actors.id"), Integer)
+    role_type = Column(String, nullable=False)

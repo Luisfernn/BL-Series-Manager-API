@@ -1,29 +1,19 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, Date, Numeric, Text
 from app.models.base import Base
 
 class Series(Base):
     __tablename__ = "series"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False)
+    title = Column(String, nullable=False, unique=True)
     country = Column(String, nullable=False)
-    status = Column(String, nullable=True)
-    production_company = Column(String, nullable=True)
-    date_start = Column(String, nullable=True)      
-    date_watched = Column(String, nullable=True)
-
-    tags = relationship("Tag", secondary="series_tag", back_populates="series")
-    actors = relationship("Actor", secondary="series_actors", back_populates="series")
-
-    characters = relationship(
-        "SeriesCharacter",
-        back_populates="series",
-        cascade="all, delete-orphan"
-    )
-
-    ships = relationship(
-    "ShipCharacterSeries",
-    back_populates="series",
-    cascade="all, delete"
-)
+    release_date = Column(Date, nullable=False)
+    episode_number = Column(Integer, nullable=False)
+    genre = Column(String, nullable=False)
+    synopsis = Column(Text, nullable=False)
+    platform = Column(String, nullable=False)
+    rate = Column(Numeric, nullable=False)
+    status = Column(String)
+    production_company = Column(String)
+    date_start = Column(Date)
+    date_watched = Column(Date)

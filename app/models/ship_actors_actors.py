@@ -1,8 +1,8 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from app.models.base import Base
 
-class ShipActorsActors(Base):
+class ShipActorActor(Base):
     __tablename__ = "ship_actors_actors"
 
-    ship_actor_id = Column(Integer, ForeignKey("ship_actors.id"), primary_key=True)
-    actor_id = Column(Integer, ForeignKey("actors.id"), primary_key=True)
+    ship_id = Column(ForeignKey("ship_actors.id"), Integer, nullable=False, unique=True)
+    actor_id = Column(ForeignKey("actors.id"), Integer, nullable=False, unique=True)
