@@ -6,6 +6,6 @@ class Character(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    series_id = Column(ForeignKey("series.id"), Integer)
-    actor_id = Column(ForeignKey("actors.id"), Integer)
+    series_id = Column(Integer, ForeignKey("series.id"))
+    actor_id = Column(Integer, ForeignKey("actors.id"))
     role_type = Column(String, nullable=False)
