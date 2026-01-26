@@ -35,9 +35,25 @@ def get_series_by_id(db: Session, series_id: int):
     return db.query(Series).filter(Series.id == series_id).first()
 
 
-def get_series_with_details(db: Session, series_id: int):
-    """Busca série com todos os dados relacionados (actors, characters, tags, ship_actors)"""
+def get_ship_characters_for_series(db: Session, series_id: int) -> list:
+    """Busca ship_characters de uma série através dos personagens"""
+    from app.models.ship_characters import ShipCharacter
+    from app.models.ship_characters_characters import ShipCharacterCharacter
+    from app.models.characters import Character
+
     return (
+        db.query(ShipCharacter)
+        .join(ShipCharacterCharacter, ShipCharacter.id == ShipCharacterCharacter.ship_id)
+        .join(Character, ShipCharacterCharacter.character_id == Character.id)
+        .filter(Character.series_id == series_id)
+        .distinct()
+        .all()
+    )
+
+
+def get_series_with_details(db: Session, series_id: int):
+    """Busca série com todos os dados relacionados (actors, characters, tags, ship_actors, ship_characters)"""
+    series = (
         db.query(Series)
         .filter(Series.id == series_id)
         .options(
@@ -48,6 +64,12 @@ def get_series_with_details(db: Session, series_id: int):
         )
         .first()
     )
+
+    if series:
+        # Adicionar ship_characters manualmente através da query customizada
+        series.ship_characters = get_ship_characters_for_series(db, series_id)
+
+    return series
 
 
 def add_actors_to_series(db: Session, series_id: int, actor_names: list[str]) -> None:
