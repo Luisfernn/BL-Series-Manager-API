@@ -14,7 +14,6 @@ from app.models.series_characters import SeriesCharacter
 from app.models.ship_actors_actors import ShipActorActor
 from app.models.ship_actors_series import ShipActorSeries
 from app.models.ship_characters_characters import ShipCharacterCharacter
-from app.models.ship_characters_series import ShipCharacterSeries
 
 __all__ = [
     "Base",
@@ -30,5 +29,4 @@ __all__ = [
     "ShipActorActor",
     "ShipActorSeries",
     "ShipCharacterCharacter",
-    "ShipCharacterSeries",
 ]

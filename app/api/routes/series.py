@@ -14,8 +14,6 @@ from app.schemas.series_characters import SeriesCharactersAdd
 from app.services.series_character_service import add_characters_to_series
 from app.schemas.ship_actors_series import ShipActorsSeriesCreate
 from app.services.ship_actors_series_service import add_ship_actor_to_series
-from app.schemas.ship_characters import ShipCharacterAdd
-from app.services.ship_characters_service import add_ship_character_to_series
 
 
 router = APIRouter(prefix="/series", tags=["Series"])
@@ -155,30 +153,6 @@ def add_ship_actors_to_series_endpoint(
             ship_actor_id=payload.ship_id,
         )
         return {"message": "Ship de atores associado à série com sucesso."}
-
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(exc),
-        )
-
-
-@router.post(
-    "/{series_id}/ship-characters",
-    status_code=status.HTTP_200_OK,
-)
-def add_ship_character_to_series_endpoint(
-    series_id: int,
-    payload: ShipCharacterAdd,
-    db: Session = Depends(get_db),
-):
-    try:
-        add_ship_character_to_series(
-            db,
-            series_id=series_id,
-            ship_character_id=payload.ship_character_id,
-        )
-        return {"message": "Ship de personagens adicionado à série com sucesso."}
 
     except ValueError as exc:
         raise HTTPException(

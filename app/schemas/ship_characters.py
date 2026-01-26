@@ -19,7 +19,3 @@ class ShipCharacterResponse(ShipCharacterBase):
 
 class ShipCharacterCharactersAdd(BaseModel):
     character_ids: List[int] = Field(..., example=[1, 2])
-
-
-class ShipCharacterAdd(BaseModel):
-    ship_character_id: int
