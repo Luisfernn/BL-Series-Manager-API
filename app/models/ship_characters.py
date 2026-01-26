@@ -10,4 +10,3 @@ class ShipCharacter(Base):
 
     # Relationships
     characters = relationship("Character", secondary="ship_characters_characters", back_populates="ship_characters")
-    series = relationship("Series", secondary="ship_characters_series", back_populates="ship_characters")
