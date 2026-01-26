@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.models.series import Series
 from app.schemas.series import SeriesCreate
 from app.models.series_actors import SeriesActor
@@ -33,6 +33,22 @@ def get_series_by_title(db: Session, title: str):
 
 def get_series_by_id(db: Session, series_id: int):
     return db.query(Series).filter(Series.id == series_id).first()
+
+
+def get_series_with_details(db: Session, series_id: int):
+    """Busca série com todos os dados relacionados (actors, characters, tags, ships)"""
+    return (
+        db.query(Series)
+        .filter(Series.id == series_id)
+        .options(
+            joinedload(Series.actors),
+            joinedload(Series.characters),
+            joinedload(Series.tags),
+            joinedload(Series.ship_actors),
+            joinedload(Series.ship_characters)
+        )
+        .first()
+    )
 
 
 def add_actors_to_series(db: Session, series_id: int, actor_names: list[str]) -> None:

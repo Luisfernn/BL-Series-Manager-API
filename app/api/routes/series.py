@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from fastapi import Query
 from typing import List
-from app.schemas.series import SeriesCreate, SeriesResponse
-from app.services.series_service import create_series, list_series, get_series_by_id
+from app.schemas.series import SeriesCreate, SeriesResponse, SeriesDetailResponse
+from app.services.series_service import create_series, list_series, get_series_by_id, get_series_with_details
 from app.services.series_tag_service import add_tags_to_series
 from app.schemas.series_tags import SeriesTagsAdd
 from app.schemas.series_actors import SeriesActorsAdd
@@ -123,14 +123,14 @@ def list_series_endpoint(
 
 @router.get(
     "/{series_id}",
-    response_model=SeriesResponse,
+    response_model=SeriesDetailResponse,
     status_code=status.HTTP_200_OK,
 )
 def get_series_endpoint(
     series_id: int,
     db: Session = Depends(get_db),
 ):
-    series = get_series_by_id(db, series_id)
+    series = get_series_with_details(db, series_id)
     if not series:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
