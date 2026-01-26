@@ -24,4 +24,3 @@ class Series(Base):
     tags = relationship("Tag", secondary="series_tag", back_populates="series")
     characters = relationship("Character", back_populates="series")
     ship_actors = relationship("ShipActor", secondary="ship_actors_series", back_populates="series")
-    ship_characters = relationship("ShipCharacter", secondary="ship_characters_series", back_populates="series")

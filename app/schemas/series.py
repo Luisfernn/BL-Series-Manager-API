@@ -87,7 +87,6 @@ class SeriesDetailResponse(SeriesBase):
     characters: List[CharacterInSeries] = []
     tags: List[TagInSeries] = []
     ship_actors: List[ShipActorInSeries] = []
-    ship_characters: List[ShipCharacterInSeries] = []
 
     class Config:
         from_attributes = True

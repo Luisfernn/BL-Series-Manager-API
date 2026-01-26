@@ -36,7 +36,7 @@ def get_series_by_id(db: Session, series_id: int):
 
 
 def get_series_with_details(db: Session, series_id: int):
-    """Busca série com todos os dados relacionados (actors, characters, tags, ships)"""
+    """Busca série com todos os dados relacionados (actors, characters, tags, ship_actors)"""
     return (
         db.query(Series)
         .filter(Series.id == series_id)
@@ -44,8 +44,7 @@ def get_series_with_details(db: Session, series_id: int):
             joinedload(Series.actors),
             joinedload(Series.characters),
             joinedload(Series.tags),
-            joinedload(Series.ship_actors),
-            joinedload(Series.ship_characters)
+            joinedload(Series.ship_actors)
         )
         .first()
     )
