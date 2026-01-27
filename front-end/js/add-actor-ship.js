@@ -3,9 +3,18 @@ const urlParams = new URLSearchParams(window.location.search);
 const blId = urlParams.get('blId');
 const blName = urlParams.get('blName'); // opcional
 
+// Função para voltar para bl-details (navegação explícita)
+function goBackToDetails() {
+    if (blId) {
+        window.location.href = 'bl-details.html?id=' + blId;
+    } else {
+        window.location.href = 'bl-list.html';
+    }
+}
+
 if (!blId) {
     alert('BL não informado');
-    window.history.back();
+    window.location.href = 'bl-list.html';
 }
 
 let shipCount = 1;
