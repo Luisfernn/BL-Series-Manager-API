@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import Optional
 
 from app.models.characters import Character
@@ -8,6 +9,22 @@ from app.models.actors import Actor
 
 def get_character_by_id(db: Session, character_id: int) -> Character | None:
     return db.query(Character).filter(Character.id == character_id).first()
+
+
+def get_character_by_name_in_series(db: Session, name: str, series_id: int) -> Character | None:
+    """
+    Busca personagem por nome dentro de uma série específica (case-insensitive).
+    Normaliza apenas para comparação, não altera o valor salvo.
+    """
+    normalized = name.strip()
+    return (
+        db.query(Character)
+        .filter(
+            func.lower(Character.name) == func.lower(normalized),
+            Character.series_id == series_id
+        )
+        .first()
+    )
 
 
 def create_character(
