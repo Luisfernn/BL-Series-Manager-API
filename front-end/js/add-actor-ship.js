@@ -107,15 +107,21 @@ async function handleSubmit(e) {
         const section = document.getElementById(`ship-section-${i}`);
         if (!section) continue;
 
-        const shipName = document.getElementById(`ship-name-${i}`);
+        const shipName = document.getElementById(`ship-name-${i}`)?.value.trim();
+        const actor1 = document.getElementById(`actor-1-${i}`)?.value.trim();
+        const actor2 = document.getElementById(`actor-2-${i}`)?.value.trim();
 
-        if (shipName?.value.trim()) {
-            ships.push({ name: shipName.value.trim() });
+        if (shipName && actor1 && actor2) {
+            ships.push({
+                ship_name: shipName,
+                actor1_nickname: actor1,
+                actor2_nickname: actor2
+            });
         }
     }
 
     if (ships.length === 0) {
-        showMessage('error', 'Preencha pelo menos um ship.');
+        showMessage('error', 'Preencha todos os campos de pelo menos um ship.');
         return;
     }
 
@@ -123,33 +129,21 @@ async function handleSubmit(e) {
         let successCount = 0;
 
         for (const ship of ships) {
-            // 1. Criar o ship
-            const createResponse = await fetch(`${API_BASE_URL}/ship-actors`, {
+            const response = await fetch(`${API_BASE_URL}/series/${blId}/ship-actors-by-name`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: ship.name })
+                body: JSON.stringify(ship)
             });
 
-            if (!createResponse.ok) {
-                const error = await createResponse.json();
+            if (!response.ok) {
+                const error = await response.json();
                 throw new Error(error.detail || 'Erro ao criar ship');
             }
 
-            const createdShip = await createResponse.json();
-
-            // 2. Associar o ship à série
-            const linkResponse = await fetch(`${API_BASE_URL}/series/${blId}/ship-actors`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ship_id: createdShip.id })
-            });
-
-            if (linkResponse.ok) {
-                successCount++;
-            }
+            successCount++;
         }
 
-        showMessage('success', `${successCount} ship(s) criado(s) e vinculado(s) com sucesso!`);
+        showMessage('success', `${successCount} ship(s) criado(s) com sucesso!`);
         setTimeout(() => goBackToDetails(), 2000);
     } catch (error) {
         showMessage('error', error.message);
