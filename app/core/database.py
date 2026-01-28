@@ -41,10 +41,12 @@ if not DATABASE_URL:
 engine = create_engine(
     DATABASE_URL,
     connect_args={
-        "options": "-c client_encoding=UTF8"
+        "options": "-c client_encoding=UTF8",
+        "connect_timeout": 10
     },
-    pool_pre_ping=True,  # Verifica se a conexão está viva antes de usar
-    echo=False  # Desabilita logging SQL para produção
+    pool_pre_ping=True,
+    pool_recycle=3600,
+    echo=False
 )
 
 SessionLocal = sessionmaker(
