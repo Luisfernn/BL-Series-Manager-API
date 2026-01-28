@@ -4,6 +4,7 @@ from datetime import date
 from typing import Optional
 
 from app.models.actors import Actor
+from app.models.series_actors import SeriesActor
 
 
 def get_actor_by_name(db: Session, name: str) -> Actor | None:
@@ -31,6 +32,17 @@ def get_actor_by_nickname(db: Session, nickname: str) -> Actor | None:
 
 def get_actor_by_id(db: Session, actor_id: int) -> Actor | None:
     return db.query(Actor).filter(Actor.id == actor_id).first()
+
+
+def actor_belongs_to_series(db: Session, actor_id: int, series_id: int) -> bool:
+    """
+    Verifica se um ator pertence a uma série específica.
+    Retorna True se existe vínculo na tabela series_actors.
+    """
+    return db.query(SeriesActor).filter(
+        SeriesActor.actor_id == actor_id,
+        SeriesActor.series_id == series_id
+    ).first() is not None
 
 
 def create_actor(
