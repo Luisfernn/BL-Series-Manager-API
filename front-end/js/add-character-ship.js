@@ -16,18 +16,27 @@ if (!blId) {
     window.location.href = 'bl-list.html';
 }
 
-// Apenas visual (temporário até backend)
-const blName = "Love in the Moonlight";
-
 let shipCount = 1;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     requireAuth();
-    document.getElementById('current-bl').textContent = blName;
+    await loadSeriesInfo();
 
     const form = document.getElementById('add-ship-form');
     form.addEventListener('submit', handleSubmit);
 });
+
+async function loadSeriesInfo() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/series/${blId}`);
+        if (response.ok) {
+            const series = await response.json();
+            document.getElementById('current-bl').textContent = series.title;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar serie:', error);
+    }
+}
 
 function addShipSection() {
     shipCount++;
@@ -69,7 +78,7 @@ function removeShipSection(shipNumber) {
     if (shipSection) shipSection.remove();
 }
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
     e.preventDefault();
 
     const ships = [];
@@ -79,14 +88,9 @@ function handleSubmit(e) {
         if (!section) continue;
 
         const shipName = document.getElementById(`ship-name-${i}`).value.trim();
-        const c1 = document.getElementById(`character-1-${i}`).value.trim();
-        const c2 = document.getElementById(`character-2-${i}`).value.trim();
 
-        if (shipName && c1 && c2) {
-            ships.push({
-                shipName,
-                characters: [c1, c2]
-            });
+        if (shipName) {
+            ships.push({ name: shipName });
         }
     }
 
@@ -95,18 +99,29 @@ function handleSubmit(e) {
         return;
     }
 
-    const requestData = {
-        blId: blId,
-        ships: ships
-    };
+    try {
+        let successCount = 0;
 
-    console.log('Payload:', requestData);
+        for (const ship of ships) {
+            const response = await fetch(`${API_BASE_URL}/ship-characters`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: ship.name })
+            });
 
-    showMessage('success', 'Ships adicionados com sucesso!');
+            if (response.ok) {
+                successCount++;
+            } else {
+                const error = await response.json();
+                throw new Error(error.detail || 'Erro ao criar ship');
+            }
+        }
 
-    document.getElementById('ships-container').innerHTML = '';
-    shipCount = 0;
-    addShipSection();
+        showMessage('success', `${successCount} ship(s) de personagens criado(s)!`);
+        setTimeout(() => goBackToDetails(), 2000);
+    } catch (error) {
+        showMessage('error', error.message);
+    }
 }
 
 function showMessage(type, text) {

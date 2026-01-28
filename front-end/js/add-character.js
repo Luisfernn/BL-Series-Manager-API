@@ -16,21 +16,29 @@ if (!blId) {
     window.location.href = 'bl-list.html';
 }
 
-let characterCount = 1; // Começamos com 1 personagem
+let characterCount = 1;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     requireAuth();
-    // ⚠️ Nome do BL depois deve vir do backend
-    const blNameEl = document.getElementById('current-bl');
-    if (blNameEl) {
-        blNameEl.textContent = `BL #${blId}`;
-    }
+    await loadSeriesInfo();
 
     const form = document.getElementById('add-character-form');
     if (form) {
         form.addEventListener('submit', handleSubmit);
     }
 });
+
+async function loadSeriesInfo() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/series/${blId}`);
+        if (response.ok) {
+            const series = await response.json();
+            document.getElementById('current-bl').textContent = series.title;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar serie:', error);
+    }
+}
 
 function addCharacterSection() {
     characterCount++;
@@ -90,7 +98,7 @@ function removeCharacterSection(characterNumber) {
     if (section) section.remove();
 }
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
     e.preventDefault();
 
     const characters = [];
@@ -100,11 +108,10 @@ function handleSubmit(e) {
         if (!section) continue;
 
         const name = document.getElementById(`character-name-${i}`)?.value.trim();
-        const actor = document.getElementById(`actor-name-${i}`)?.value.trim();
         const role = document.getElementById(`role-type-${i}`)?.value;
 
-        if (name && actor && role) {
-            characters.push({ name, actor, role });
+        if (name && role) {
+            characters.push({ name, role_type: role });
         }
     }
 
@@ -113,21 +120,40 @@ function handleSubmit(e) {
         return;
     }
 
-    const requestData = {
-        blId: Number(blId),
-        characters
-    };
+    try {
+        let successCount = 0;
+        const errors = [];
 
-    console.log('Payload:', requestData);
+        for (const char of characters) {
+            const response = await fetch(`${API_BASE_URL}/characters`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: char.name,
+                    series_id: Number(blId),
+                    role_type: char.role_type
+                })
+            });
 
-    showMessage(
-        'success',
-        `${characters.length} personagem(ns) adicionado(s) com sucesso!`
-    );
+            if (response.ok) {
+                successCount++;
+            } else {
+                const error = await response.json();
+                errors.push(`${char.name}: ${error.detail || 'Erro desconhecido'}`);
+            }
+        }
 
-    document.getElementById('characters-container').innerHTML = '';
-    characterCount = 0;
-    addCharacterSection();
+        if (successCount > 0) {
+            showMessage('success', `${successCount} personagem(ns) adicionado(s) com sucesso!`);
+            setTimeout(() => goBackToDetails(), 2000);
+        }
+
+        if (errors.length > 0) {
+            showMessage('error', errors.join(', '));
+        }
+    } catch (error) {
+        showMessage('error', error.message);
+    }
 }
 
 function showMessage(type, text) {

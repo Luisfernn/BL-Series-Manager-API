@@ -1,7 +1,6 @@
 // ====== BL vindo pela URL ======
 const urlParams = new URLSearchParams(window.location.search);
 const blId = urlParams.get('blId');
-const blName = urlParams.get('blName'); // opcional
 
 // Função para voltar para bl-details (navegação explícita)
 function goBackToDetails() {
@@ -19,16 +18,25 @@ if (!blId) {
 
 let shipCount = 1;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     requireAuth();
-    // Mostrar nome do BL (se vier pela URL)
-    if (blName) {
-        document.getElementById('current-bl').textContent = blName;
-    }
+    await loadSeriesInfo();
 
     const form = document.getElementById('add-ship-form');
     form.addEventListener('submit', handleSubmit);
 });
+
+async function loadSeriesInfo() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/series/${blId}`);
+        if (response.ok) {
+            const series = await response.json();
+            document.getElementById('current-bl').textContent = series.title;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar serie:', error);
+    }
+}
 
 function addShipSection() {
     shipCount++;
@@ -90,7 +98,7 @@ function removeShipSection(shipNumber) {
     }
 }
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
     e.preventDefault();
 
     const ships = [];
@@ -100,41 +108,52 @@ function handleSubmit(e) {
         if (!section) continue;
 
         const shipName = document.getElementById(`ship-name-${i}`);
-        const actor1 = document.getElementById(`actor-1-${i}`);
-        const actor2 = document.getElementById(`actor-2-${i}`);
 
-        if (
-            shipName?.value.trim() &&
-            actor1?.value.trim() &&
-            actor2?.value.trim()
-        ) {
-            ships.push({
-                shipName: shipName.value.trim(),
-                actors: [
-                    actor1.value.trim(),
-                    actor2.value.trim()
-                ]
-            });
+        if (shipName?.value.trim()) {
+            ships.push({ name: shipName.value.trim() });
         }
     }
 
     if (ships.length === 0) {
-        showMessage('error', 'Preencha pelo menos um ship completo.');
+        showMessage('error', 'Preencha pelo menos um ship.');
         return;
     }
 
-    const requestData = {
-        blId: Number(blId),
-        ships
-    };
+    try {
+        let successCount = 0;
 
-    console.log('Dados enviados:', requestData);
+        for (const ship of ships) {
+            // 1. Criar o ship
+            const createResponse = await fetch(`${API_BASE_URL}/ship-actors`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: ship.name })
+            });
 
-    showMessage('success', `💞 ${ships.length} ship(s) adicionado(s) com sucesso!`);
+            if (!createResponse.ok) {
+                const error = await createResponse.json();
+                throw new Error(error.detail || 'Erro ao criar ship');
+            }
 
-    document.getElementById('ships-container').innerHTML = '';
-    shipCount = 0;
-    addShipSection();
+            const createdShip = await createResponse.json();
+
+            // 2. Associar o ship à série
+            const linkResponse = await fetch(`${API_BASE_URL}/series/${blId}/ship-actors`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ship_id: createdShip.id })
+            });
+
+            if (linkResponse.ok) {
+                successCount++;
+            }
+        }
+
+        showMessage('success', `${successCount} ship(s) criado(s) e vinculado(s) com sucesso!`);
+        setTimeout(() => goBackToDetails(), 2000);
+    } catch (error) {
+        showMessage('error', error.message);
+    }
 }
 
 function showMessage(type, text) {

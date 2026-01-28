@@ -16,27 +16,45 @@ if (!blId) {
     window.location.href = 'bl-list.html';
 }
 
-// Visual temporário
-const blName = "Love in the Moonlight";
-
-// Mock de tags (até backend)
-const existingTags = [
-    { id: 1, name: "Romance" },
-    { id: 2, name: "Drama" },
-    { id: 3, name: "Fantasia" }
-];
-
+let seriesTitle = '';
+let existingTags = [];
 let newTagFieldCount = 1;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     requireAuth();
-    document.getElementById('current-bl').textContent = blName;
+    await loadSeriesInfo();
+    await loadExistingTags();
     renderExistingTags();
 
     document
         .getElementById('add-tags-form')
         .addEventListener('submit', handleSubmit);
 });
+
+async function loadSeriesInfo() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/series/${blId}`);
+        if (response.ok) {
+            const series = await response.json();
+            seriesTitle = series.title;
+            document.getElementById('current-bl').textContent = series.title;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar serie:', error);
+    }
+}
+
+async function loadExistingTags() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/tags`);
+        if (response.ok) {
+            existingTags = await response.json();
+        }
+    } catch (error) {
+        console.error('Erro ao carregar tags:', error);
+        existingTags = [];
+    }
+}
 
 function renderExistingTags() {
     const list = document.getElementById('existing-tags-list');
@@ -76,13 +94,17 @@ function removeNewTagField(id) {
     if (field) field.remove();
 }
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
     e.preventDefault();
 
-    const selectedTags = [];
+    const selectedTagNames = [];
     document
         .querySelectorAll('#existing-tags-list input:checked')
-        .forEach(cb => selectedTags.push(parseInt(cb.value)));
+        .forEach(cb => {
+            const tagId = parseInt(cb.value);
+            const tag = existingTags.find(t => t.id === tagId);
+            if (tag) selectedTagNames.push(tag.name);
+        });
 
     const newTags = [];
     document
@@ -91,20 +113,35 @@ function handleSubmit(e) {
             if (input.value.trim()) newTags.push(input.value.trim());
         });
 
-    if (selectedTags.length === 0 && newTags.length === 0) {
+    const allTags = [...selectedTagNames, ...newTags];
+
+    if (allTags.length === 0) {
         showMessage('error', 'Selecione ou crie pelo menos uma tag.');
         return;
     }
 
-    const requestData = {
-        blId: blId,
-        selectedTags,
-        newTags
-    };
+    if (!seriesTitle) {
+        showMessage('error', 'Erro: titulo da serie nao encontrado.');
+        return;
+    }
 
-    console.log('Payload:', requestData);
+    try {
+        const response = await fetch(`${API_BASE_URL}/series/${encodeURIComponent(seriesTitle)}/tags`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tags: allTags })
+        });
 
-    showMessage('success', 'Tags vinculadas com sucesso!');
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Erro ao vincular tags');
+        }
+
+        showMessage('success', 'Tags vinculadas com sucesso!');
+        setTimeout(() => goBackToDetails(), 2000);
+    } catch (error) {
+        showMessage('error', error.message);
+    }
 }
 
 function showMessage(type, text) {

@@ -18,25 +18,32 @@ if (!blId) {
 
 let messageTimeout = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     requireAuth();
-    const blNameEl = document.getElementById('current-bl');
-    const form = document.getElementById('add-actor-form');
+    await loadSeriesInfo();
 
-    // Nome do BL será preenchido futuramente pelo backend
-    if (blNameEl) {
-        blNameEl.textContent = `BL #${blId}`;
-    }
-
+    const form = document.getElementById('add_actor_form');
     if (form) {
         form.addEventListener('submit', handleSubmit);
     }
 });
 
+async function loadSeriesInfo() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/series/${blId}`);
+        if (response.ok) {
+            const series = await response.json();
+            document.getElementById('current_bl').textContent = series.title;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar serie:', error);
+    }
+}
+
 function handleSubmit(event) {
     event.preventDefault();
 
-    const actorNameInput = document.getElementById('actor-name');
+    const actorNameInput = document.getElementById('actor_name');
     if (!actorNameInput) return;
 
     const actorName = actorNameInput.value.trim();
@@ -46,25 +53,15 @@ function handleSubmit(event) {
         return;
     }
 
-    const requestData = {
-        blId: blId,
-        actorName: actorName
-    };
-
-    // Aqui entrará o fetch futuramente
-    console.log('Dados enviados:', requestData);
-
-    showMessage(
-        'success',
-        `Ator "${actorName}" foi vinculado com sucesso ao BL.`
-    );
-
-    actorNameInput.value = '';
+    // NOTA: A API requer dados completos do ator (nickname, nationality, gender)
+    // Este formulário apenas coleta o nome. Funcionalidade limitada.
+    console.log('Dados coletados:', { blId, actorName });
+    showMessage('error', 'API requer dados completos do ator. Formulario precisa ser expandido.');
 }
 
 function showMessage(type, text) {
-    const successMessage = document.getElementById('success-message');
-    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success_message');
+    const errorMessage = document.getElementById('error_message');
 
     if (!successMessage || !errorMessage) return;
 
