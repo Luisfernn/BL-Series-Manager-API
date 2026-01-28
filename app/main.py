@@ -10,7 +10,13 @@ from app.auth.routes import router as auth_router
 from fastapi.middleware.cors import CORSMiddleware
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Theedom API",
+    description="API para gerenciamento de series BL",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
 app.include_router(auth_router)
 app.include_router(series_router)
