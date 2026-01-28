@@ -50,9 +50,21 @@ async function handleLoginSubmit(event) {
 }
 
 function clearMessages() {
-    const messageBox = document.getElementById("message");
-    if (messageBox) {
-        messageBox.textContent = "";
-        messageBox.className = "";
+    const errorBox = document.getElementById("error-message");
+    const successBox = document.getElementById("success-message");
+
+    if (errorBox) errorBox.style.display = 'none';
+    if (successBox) successBox.style.display = 'none';
+}
+
+function showMessage(type, text) {
+    clearMessages();
+
+    const targetId = type === 'success' ? 'success-message' : 'error-message';
+    const target = document.getElementById(targetId);
+
+    if (target) {
+        target.querySelector('.message-text').textContent = text;
+        target.style.display = 'flex';
     }
 }
