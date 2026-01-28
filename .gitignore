@@ -33,6 +33,7 @@ dist/
 # Ignorar arquivos de sistema
 .DS_Store
 Thumbs.db
+nul
 
 # Ignorar backups e temporários
 *.bak
