@@ -6,7 +6,7 @@ const blName = urlParams.get('blName'); // opcional
 // Função para voltar para bl-details (navegação explícita)
 function goBackToDetails() {
     if (blId) {
-        window.location.href = 'bl-details.html?id=' + blId;
+        window.location.href = 'bl-details.html?blId=' + blId;
     } else {
         window.location.href = 'bl-list.html';
     }
