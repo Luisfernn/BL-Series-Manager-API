@@ -26,7 +26,7 @@ if all([DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD]):
     # Faz URL encoding da senha para evitar problemas com caracteres especiais (@, !, etc)
     encoded_password = quote_plus(DB_PASSWORD)
     # Usa psycopg3 (melhor suporte Windows)
-    DATABASE_URL = f"postgresql+psycopg://{DB_USER}:{encoded_password}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DATABASE_URL = f"postgresql+psycopg://{DB_USER}:{encoded_password}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
 else:
     # Fallback para DATABASE_URL direta
     DATABASE_URL = os.getenv("DATABASE_URL")
