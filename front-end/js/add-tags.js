@@ -120,13 +120,8 @@ async function handleSubmit(e) {
         return;
     }
 
-    if (!seriesTitle) {
-        showMessage('error', 'Erro: titulo da serie nao encontrado.');
-        return;
-    }
-
     try {
-        const response = await fetch(`${API_BASE_URL}/series/${encodeURIComponent(seriesTitle)}/tags`, {
+        const response = await fetch(`${API_BASE_URL}/series/${blId}/tags`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ tags: allTags })

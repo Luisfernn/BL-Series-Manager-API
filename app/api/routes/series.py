@@ -6,7 +6,7 @@ from fastapi import Query
 from typing import List
 from app.schemas.series import SeriesCreate, SeriesResponse, SeriesDetailResponse
 from app.services.series_service import create_series, list_series, get_series_by_id, get_series_with_details
-from app.services.series_tag_service import add_tags_to_series
+from app.services.series_tag_service import add_tags_to_series, add_tags_to_series_by_id
 from app.schemas.series_tags import SeriesTagsAdd
 from app.schemas.series_actors import SeriesActorsAdd, SeriesActorByNicknameAdd
 from app.services.series_actor_service import add_actors_to_series
@@ -64,6 +64,31 @@ def add_tags_to_series_endpoint(
         add_tags_to_series(
             db,
             series_title=title,
+            tag_names=payload.tags,
+        )
+        return {"message": "Tags adicionadas com sucesso."}
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
+
+
+@router.post(
+    "/{series_id}/tags",
+    status_code=status.HTTP_200_OK,
+    summary="Adicionar tags a uma série por ID",
+    description="Associa uma ou mais tags a uma série existente usando o ID. Se a tag não existir, ela será criada automaticamente.",
+)
+def add_tags_to_series_by_id_endpoint(
+    series_id: int,
+    payload: SeriesTagsAdd,
+    db: Session = Depends(get_db),
+):
+    try:
+        add_tags_to_series_by_id(
+            db,
+            series_id=series_id,
             tag_names=payload.tags,
         )
         return {"message": "Tags adicionadas com sucesso."}
