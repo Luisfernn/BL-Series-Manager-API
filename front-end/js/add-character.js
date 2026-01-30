@@ -148,13 +148,13 @@ async function handleSubmit(e) {
             }
         }
 
-        if (successCount > 0) {
+        if (successCount > 0 && errors.length === 0) {
             showMessage('success', `${successCount} personagem(ns) adicionado(s) com sucesso!`);
             setTimeout(() => goBackToDetails(), 2000);
-        }
-
-        if (errors.length > 0) {
-            showMessage('error', errors.join(', '));
+        } else if (successCount > 0 && errors.length > 0) {
+            showMessage('error', `${successCount} criado(s), ${errors.length} falha(s): ${errors.join('; ')}`);
+        } else {
+            showMessage('error', `Nenhum criado. Erros: ${errors.join('; ')}`);
         }
     } catch (error) {
         showMessage('error', error.message);

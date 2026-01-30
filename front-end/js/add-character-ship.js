@@ -112,6 +112,7 @@ async function handleSubmit(e) {
 
     try {
         let successCount = 0;
+        const errors = [];
 
         for (const ship of ships) {
             const response = await fetch(`${API_BASE_URL}/series/${blId}/ship-characters-by-name`, {
@@ -120,16 +121,22 @@ async function handleSubmit(e) {
                 body: JSON.stringify(ship)
             });
 
-            if (!response.ok) {
+            if (response.ok) {
+                successCount++;
+            } else {
                 const error = await response.json();
-                throw new Error(error.detail || 'Erro ao criar ship');
+                errors.push(`${ship.ship_name}: ${error.detail || 'Erro desconhecido'}`);
             }
-
-            successCount++;
         }
 
-        showMessage('success', `${successCount} ship(s) de personagens criado(s)!`);
-        setTimeout(() => goBackToDetails(), 2000);
+        if (successCount > 0 && errors.length === 0) {
+            showMessage('success', `${successCount} ship(s) de personagens criado(s)!`);
+            setTimeout(() => goBackToDetails(), 2000);
+        } else if (successCount > 0 && errors.length > 0) {
+            showMessage('error', `${successCount} criado(s), ${errors.length} falha(s): ${errors.join('; ')}`);
+        } else {
+            showMessage('error', `Nenhum criado. Erros: ${errors.join('; ')}`);
+        }
     } catch (error) {
         showMessage('error', error.message);
     }
