@@ -44,3 +44,6 @@ htmlcov/
 .coverage
 .cache/
 .pytest_cache/
+
+# Ignorar o arquivo zip criado para a Lambda
+.zip
