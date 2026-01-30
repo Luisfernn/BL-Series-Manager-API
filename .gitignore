@@ -46,4 +46,4 @@ htmlcov/
 .pytest_cache/
 
 # Ignorar o arquivo zip criado para a Lambda
-.zip
+*.zip
