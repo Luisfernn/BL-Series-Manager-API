@@ -37,6 +37,7 @@ async function handleLoginSubmit(event) {
             throw new Error(data.detail || "Erro ao autenticar");
         }
 
+        loginUser(login);
         showMessage("success", "Login realizado com sucesso!");
 
         setTimeout(() => {
