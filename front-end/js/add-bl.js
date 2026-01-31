@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
             genre: document.getElementById('genre').value || null,
             synopsis: document.getElementById('synopsis').value || null,
             platform: document.getElementById('platform').value || null,
-            rate: document.getElementById('rating').value
-                ? Number(document.getElementById('rating').value)
+            rate: document.getElementById('rate').value
+                ? Number(document.getElementById('rate').value)
                 : null,
             status: document.getElementById('status').value || null,
             production_company: document.getElementById('producer').value || null,
