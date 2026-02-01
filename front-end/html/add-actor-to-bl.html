@@ -16,7 +16,7 @@
         </button>
         <div class="header-content">
             <h1 class="page-title">Adicionar Ator ao BL</h1>
-            <p class="page-subtitle">Digite o nickname do ator para vincular a este BL</p>
+            <p class="page-subtitle">Preencha os dados do ator para criar e vincular a este BL</p>
         </div>
         <div class="spacer"></div>
         <button class="logout-button" onclick="logout()">
@@ -44,10 +44,42 @@
 
         <!-- Formulário -->
         <form id="add_actor_form" class="actor-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="actor_name">Nome Completo</label>
+                    <input type="text" id="actor_name" name="actor_name" required placeholder="Ex: Vachirawit Chivaaree">
+                </div>
+                <div class="form-group">
+                    <label for="actor_nickname">Nickname</label>
+                    <input type="text" id="actor_nickname" name="actor_nickname" required placeholder="Ex: Bright">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="actor_nationality">Nacionalidade</label>
+                    <input type="text" id="actor_nationality" name="actor_nationality" required placeholder="Ex: Tailandês">
+                </div>
+                <div class="form-group">
+                    <label for="actor_gender">Gênero</label>
+                    <input type="text" id="actor_gender" name="actor_gender" required placeholder="Ex: Masculino">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="actor_birthday">Data de Nascimento</label>
+                    <input type="text" id="actor_birthday" name="actor_birthday" placeholder="Ex: 1997-12-04">
+                </div>
+                <div class="form-group">
+                    <label for="actor_agency">Agência</label>
+                    <input type="text" id="actor_agency" name="actor_agency" placeholder="Ex: GMMTV">
+                </div>
+            </div>
+
             <div class="form-group">
-                <label for="actor_name">Nickname do Ator</label>
-                <input type="text" id="actor_name" name="actor_name" class="form-input"
-                    placeholder="Ex: Bright, Win, Mile" required>
+                <label for="actor_ig">Instagram</label>
+                <input type="text" id="actor_ig" name="actor_ig" placeholder="Ex: @baborightv">
             </div>
 
             <div class="form-actions">
