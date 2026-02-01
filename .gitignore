@@ -47,3 +47,6 @@ htmlcov/
 
 # Ignorar o arquivo zip criado para a Lambda
 *.zip
+
+# Ignorar pacotes Lambda (dependências Linux)
+lambda_package/
