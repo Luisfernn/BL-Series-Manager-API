@@ -39,6 +39,11 @@
                 </div>
 
                 <div class="info-item">
+                    <span class="info-label">Nº de Episódios</span>
+                    <span class="info-value" id="episode_number">-</span>
+                </div>
+
+                <div class="info-item">
                     <span class="info-label">Gênero</span>
                     <span class="info-value" id="genre">-</span>
                 </div>
@@ -142,6 +147,22 @@
             <div id="actor_ships_list" class="items-list"></div>
             <div id="actor_ships_empty" class="empty-message">
                 Nenhum ship de atores vinculado ainda.
+            </div>
+        </section>
+
+        <!-- Seção 6: Tags -->
+        <section class="detail-section">
+            <div class="section-header">
+                <h2 class="section-title">Tags</h2>
+                <button class="add-button" onclick="linkTags()">
+                    <span class="add-icon">➕</span>
+                    Vincular tags
+                </button>
+            </div>
+
+            <div id="tags_list" class="items-list"></div>
+            <div id="tags_empty" class="empty-message">
+                Nenhuma tag vinculada ainda.
             </div>
         </section>
 
