@@ -1,10 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from app.models.series import Series
 from app.schemas.series import SeriesCreate
-from app.models.series_actors import SeriesActor
 from sqlalchemy import func, extract
-from app.services.actor_service import get_actor_by_name
-
 def create_series(db: Session, series: SeriesCreate):
     db_series = Series(
         title=series.title,
@@ -70,31 +67,6 @@ def get_series_with_details(db: Session, series_id: int):
         series.ship_characters = get_ship_characters_for_series(db, series_id)
 
     return series
-
-
-def add_actors_to_series(db: Session, series_id: int, actor_names: list[str]) -> None:
-    series = db.query(Series).filter(Series.id == series_id).first()
-
-    if not series:
-        raise ValueError(f"Series with id {series_id} not found. Please verify the series exists.")
-
-    for name in actor_names:
-        actor = get_actor_by_name(db, name)
-        if not actor:
-            raise ValueError(f"Actor with name '{name}' not found. Please verify the actor exists.")
-
-        # Verifica se a associação já existe
-        exists = (
-            db.query(SeriesActor)
-            .filter(SeriesActor.series_id == series.id, SeriesActor.actor_id == actor.id)
-            .first()
-        )
-
-        if not exists:
-            association = SeriesActor(series_id=series.id, actor_id=actor.id)
-            db.add(association)
-
-    db.commit()
 
 
 def list_series(

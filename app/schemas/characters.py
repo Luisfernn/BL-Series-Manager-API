@@ -9,7 +9,7 @@ class CharacterBase(BaseModel):
 
 class CharacterCreate(CharacterBase):
     series_id: int = Field(..., example=1)
-    actor_id: Optional[int] = Field(None, example=1)
+    actor_nickname: str = Field(..., example="Bright", description="Nickname do ator/atriz que interpreta o personagem")
 
 
 class CharacterResponse(CharacterBase):

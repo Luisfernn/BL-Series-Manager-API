@@ -13,7 +13,7 @@ router = APIRouter(prefix="/characters", tags=["Characters"])
     response_model=CharacterResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Criar um novo personagem",
-    description="Cria um novo personagem vinculado a uma série e opcionalmente a um ator. Valida que a série e o ator (se fornecido) existem.",
+    description="Cria um novo personagem vinculado a uma série e a um ator. Busca o ator pelo nickname informado.",
 )
 def create_character_endpoint(
     payload: CharacterCreate,
@@ -24,7 +24,7 @@ def create_character_endpoint(
             db,
             name=payload.name,
             series_id=payload.series_id,
-            actor_id=payload.actor_id,
+            actor_nickname=payload.actor_nickname,
             role_type=payload.role_type
         )
     except ValueError as exc:
