@@ -418,32 +418,36 @@ body {
 }
 
 .flow-btn {
-    padding: 12px 24px;
-    border: none;
+    padding: 12px 28px;
+    border: 2px solid transparent;
     border-radius: 8px;
     font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: all 0.3s ease;
 }
 
 .flow-btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
 .flow-btn-home {
-    background: #333;
-    color: #e0e0e0;
+    background: none;
+    border-color: #666;
+    color: #999;
 }
 
 .flow-btn-home:hover {
-    background: #444;
+    border-color: #888;
+    color: #ccc;
 }
 
 .flow-btn-next {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #8e44ad, #7d3c98);
+    border-color: transparent;
     color: white;
 }
 
 .flow-btn-next:hover {
-    background: linear-gradient(135deg, #5a6fd6, #6a4293);
+    box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
 }
