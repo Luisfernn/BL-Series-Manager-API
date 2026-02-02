@@ -50,31 +50,6 @@ def create_series_endpoint(
 
 
 @router.post(
-    "/{title}/tags",
-    status_code=status.HTTP_200_OK,
-    summary="Adicionar tags a uma série",
-    description="Associa uma ou mais tags a uma série existente. Se a tag não existir, ela será criada automaticamente.",
-)
-def add_tags_to_series_endpoint(
-    title: str,
-    payload: SeriesTagsAdd,
-    db: Session = Depends(get_db),
-):
-    try:
-        add_tags_to_series(
-            db,
-            series_title=title,
-            tag_names=payload.tags,
-        )
-        return {"message": "Tags adicionadas com sucesso."}
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(exc),
-        )
-
-
-@router.post(
     "/{series_id}/tags",
     status_code=status.HTTP_200_OK,
     summary="Adicionar tags a uma série por ID",
@@ -89,6 +64,31 @@ def add_tags_to_series_by_id_endpoint(
         add_tags_to_series_by_id(
             db,
             series_id=series_id,
+            tag_names=payload.tags,
+        )
+        return {"message": "Tags adicionadas com sucesso."}
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
+
+
+@router.post(
+    "/{title}/tags",
+    status_code=status.HTTP_200_OK,
+    summary="Adicionar tags a uma série",
+    description="Associa uma ou mais tags a uma série existente. Se a tag não existir, ela será criada automaticamente.",
+)
+def add_tags_to_series_endpoint(
+    title: str,
+    payload: SeriesTagsAdd,
+    db: Session = Depends(get_db),
+):
+    try:
+        add_tags_to_series(
+            db,
+            series_title=title,
             tag_names=payload.tags,
         )
         return {"message": "Tags adicionadas com sucesso."}
