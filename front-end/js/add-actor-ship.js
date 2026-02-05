@@ -18,6 +18,7 @@ if (!blId) {
 }
 
 let shipCount = 1;
+let blActors = [];
 
 document.addEventListener('DOMContentLoaded', async function () {
     requireAuth();
@@ -41,11 +42,25 @@ async function loadSeriesInfo() {
         }
         const series = await response.json();
         document.getElementById('current-bl').textContent = series.title;
+
+        blActors = series.actors || [];
+        populateActorSelect(document.getElementById('actor-1-1'));
+        populateActorSelect(document.getElementById('actor-2-1'));
     } catch (error) {
         console.error('Erro ao carregar serie:', error);
         alert('Erro ao verificar BL.');
         window.location.href = 'bl-list.html';
     }
+}
+
+function populateActorSelect(select) {
+    select.innerHTML = '<option value="">Selecione o ator/atriz...</option>';
+    blActors.forEach(actor => {
+        const option = document.createElement('option');
+        option.value = actor.nickname;
+        option.textContent = actor.nickname;
+        select.appendChild(option);
+    });
 }
 
 function addShipSection() {
@@ -77,28 +92,22 @@ function addShipSection() {
 
         <div class="form-group">
             <label for="actor-1-${shipCount}">Ator 1</label>
-            <input 
-                type="text" 
-                id="actor-1-${shipCount}" 
-                class="form-input"
-                placeholder="Nome do primeiro ator"
-                required
-            >
+            <select id="actor-1-${shipCount}" class="form-select" required>
+                <option value="">Selecione o ator/atriz...</option>
+            </select>
         </div>
 
         <div class="form-group">
             <label for="actor-2-${shipCount}">Ator 2</label>
-            <input 
-                type="text" 
-                id="actor-2-${shipCount}" 
-                class="form-input"
-                placeholder="Nome do segundo ator"
-                required
-            >
+            <select id="actor-2-${shipCount}" class="form-select" required>
+                <option value="">Selecione o ator/atriz...</option>
+            </select>
         </div>
     `;
 
     shipsContainer.appendChild(shipSection);
+    populateActorSelect(document.getElementById(`actor-1-${shipCount}`));
+    populateActorSelect(document.getElementById(`actor-2-${shipCount}`));
 }
 
 function removeShipSection(shipNumber) {
