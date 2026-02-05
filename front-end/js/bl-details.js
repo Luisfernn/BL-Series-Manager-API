@@ -165,6 +165,8 @@ function renderTags(tags) {
     empty.style.display = 'none';
     list.style.display = 'grid';
 
+    tags.sort((a, b) => a.name.localeCompare(b.name));
+
     tags.forEach(tag => {
         const card = document.createElement('div');
         card.className = 'item-card';
